@@ -66,7 +66,8 @@ ROLLBACK;
 SELECT * FROM accounts WHERE account_id = 1;
 -- KẾT QUẢ: Số dư vẫn giữ nguyên như ban đầu, không bị trừ 2 triệu.
 
--- 3.
+-- 3. Kiểm tra tính toàn vẹn dữ liệu
+-- Chạy Transaction nhiều lần, đảm bảo rằng mỗi bản ghi trong transactions tương ứng đúng với một thay đổi balance
 
 -- 1. Chạy một giao dịch hợp lệ (Rút 100k)
 BEGIN;
@@ -80,8 +81,8 @@ BEGIN;
     INSERT INTO transactions (account_id, amount, trans_type) VALUES (1, 200000, 'WITHDRAW');
 COMMIT;
 
--- 3. Kiểm tra tính toàn vẹn dữ liệu
--- Chạy Transaction nhiều lần, đảm bảo rằng mỗi bản ghi trong transactions tương ứng đúng với một thay đổi balance
+-- 3. Kiểm tra tính toàn vẹn
+-- Tổng số tiền ban đầu (10tr) - Tổng tiền đã rút trong transaction = Số dư hiện tại
 SELECT 
     a.customer_name,
     a.balance AS so_du_hien_tai,
